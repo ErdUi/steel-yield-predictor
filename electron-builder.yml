@@ -1,0 +1,17 @@
+appId: com.steel-yield-predictor
+productName: Steel Yield Predictor
+portable:
+  splashImage: assets/splash.png
+  requestExecutionLevel: user
+win:
+  target: portable
+  icon: assets/icon.ico
+asar: true
+files:
+  - dist/**/*
+  - package.json
+  - 'models/**/*'
+  - '!**/*.map'
+extraMeta:
+  FileDescription: Steel Yield Strength Prediction Tool
+  LegalCopyright: © 2024
