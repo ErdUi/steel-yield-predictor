@@ -1,17 +1,22 @@
 appId: com.steel-yield-predictor
 productName: Steel Yield Predictor
-portable:
-  splashImage: assets/splash.png
-  requestExecutionLevel: user
 win:
-  target: portable
-  icon: assets/icon.ico
-asar: true
+  target:
+    - portable
+  certificateFile: certificate.pfx
+  certificatePassword: ${CERTIFICATE_PASSWORD}
+  publisherName: Your Organization
+  verifyUpdateCodeSignature: true
+  signDlls: true
+portable:
+  artifactName: SteelYieldPredictor.exe
+asarUnpack:
+  - node_modules/tensorflow.js/**/*
 files:
   - dist/**/*
-  - package.json
-  - 'models/**/*'
+  - models/**/*
   - '!**/*.map'
-extraMeta:
-  FileDescription: Steel Yield Strength Prediction Tool
-  LegalCopyright: © 2024
+  - '!**/*.ts'
+compressionLevel: maximum
+appImage:
+  license: LICENSE
