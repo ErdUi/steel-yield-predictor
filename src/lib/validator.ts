@@ -3,14 +3,14 @@ export interface ValidationResult {
   message: string;
 }
 
-export interface ValidationRules {
-  QC_Re?: [number, number];
-  QC_Rm?: [number, number];
-  QC_A?: [number, number];
-  Dimension?: [number, number];
+interface GradeRequirements {
+  QC_Re: [number, number];
+  QC_Rm: [number, number];
+  QC_A: [number, number];
+  Dimension: [number, number];
 }
 
-export const gradeRequirements: Record<string, ValidationRules> = {
+const gradeRequirements: Record<string, GradeRequirements> = {
   'S355': {
     QC_Re: [235, 355],
     QC_Rm: [340, 470],
@@ -27,19 +27,30 @@ export const gradeRequirements: Record<string, ValidationRules> = {
 
 export function validateInput(
   value: number,
-  fieldName: string,
+  field: string,
   grade: string
 ): ValidationResult {
+  if (isNaN(value)) {
+    return {
+      isValid: false,
+      message: `${field} must be a number`
+    };
+  }
+
   const requirements = gradeRequirements[grade];
-  if (!requirements || !requirements[fieldName]) {
+  if (!requirements || !requirements[field]) {
     return { isValid: true, message: '' };
   }
 
-  const [min, max] = requirements[fieldName];
+  const [min, max] = requirements[field];
   const isValid = value >= min && value <= max;
 
   return {
     isValid,
-    message: isValid ? '' : `Value must be between ${min} and ${max}`
+    message: isValid ? '' : `For ${grade}, ${field} must be between ${min} and ${max}`
   };
+}
+
+export function getGradeRequirements(grade: string): GradeRequirements | null {
+  return gradeRequirements[grade] || null;
 }
