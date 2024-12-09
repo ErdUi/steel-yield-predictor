@@ -1,38 +1,18 @@
-# Steel Yield Strength Predictor
+# Steel Yield Predictor
 
-A Windows application for predicting steel yield strength using Random Forest model.
+Windows application for predicting steel yield strength using Random Forest model.
 
-## Features
-
-- Real-time yield strength prediction
-- Support for S355 and S690 steel grades
-- Confidence interval visualization
-- Material requirement validation
-- Excel file processing support
+## Download
+Get the latest release from the [Releases page](https://github.com/ErdUi/steel-yield-predictor/releases)
 
 ## Installation
+1. Install [Node.js](https://nodejs.org) (LTS version)
+2. Download and extract the release package
+3. Run `install.ps1` with PowerShell
+4. Use desktop shortcut to launch
 
-1. Clone the repository
-2. Install dependencies:
-```bash
-npm install
-```
-3. Start the development server:
-```bash
-npm run dev
-```
-
-## Usage
-
-1. Enter material parameters (QC_Re, QC_Rm, QC_A)
-2. Select manufacturer
-3. Input dimension
-4. Click predict to get results
-
-## Technology Stack
-
-- Next.js
-- React
-- TensorFlow.js
-- Recharts
-- Tailwind CSS
+## Features
+- S355 and S690 steel grade predictions
+- Real-time validation
+- Confidence intervals
+- Excel import/export
