@@ -1,12 +1,12 @@
 # Steel Yield Predictor
 
-Portable Windows application for predicting steel yield strength.
-
-## Usage
-1. Download SteelYieldPredictor.exe from Releases
-2. Double-click to run - no installation needed
+A web application for predicting steel yield strength for S355 and S690 grades.
 
 ## Features
-- S355/S690 prediction
-- Real-time validation
+- Real-time strength prediction
+- Confidence interval calculation
 - Excel import/export
+- No installation needed
+
+## Usage
+Download the latest release from releases page and run the executable.
