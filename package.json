@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "convert-model": "python scripts/convert_model.py",
+    "test": "jest"
   },
   "dependencies": {
     "@tensorflow/tfjs": "^4.15.0",
@@ -25,5 +27,12 @@
     "recharts": "^2.10.3",
     "tailwindcss": "3.3.6",
     "typescript": "5.3.3"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^14.1.2",
+    "@types/jest": "^29.5.11",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
   }
 }
