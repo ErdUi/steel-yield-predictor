@@ -1,26 +1,21 @@
 {
   "name": "steel-yield-predictor",
   "version": "1.0.0",
-  "private": true,
+  "description": "Steel Yield Strength Prediction Tool",
+  "main": "main.js",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build && next export",
-    "package": "electron-builder build"
+    "start": "electron .",
+    "build": "next build && next export && electron-builder"
   },
   "build": {
+    "appId": "com.steel-yield-predictor",
+    "productName": "Steel Yield Predictor",
+    "directories": {
+      "output": "dist"
+    },
     "win": {
-      "target": "portable"
+      "target": "portable",
+      "icon": "assets/icon.ico"
     }
-  },
-  "dependencies": {
-    "@tensorflow/tfjs": "^4.15.0",
-    "electron-serve": "^1.2.0",
-    "next": "latest",
-    "react": "^18",
-    "react-dom": "^18"
-  },
-  "devDependencies": {
-    "electron": "^28.0.0",
-    "electron-builder": "^24.9.1"
   }
 }
