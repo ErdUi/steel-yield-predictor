@@ -1,12 +1,24 @@
 import * as tf from '@tensorflow/tfjs';
-import { ModelInput, Prediction } from './model';
+import { ModelInput, Prediction, getMinYieldStrength } from './model';
 
 export class RandomForestModel {
   private model: tf.GraphModel | null = null;
-  private NUM_TREES = 500;
+  private loadAttempts = 0;
+  private readonly MAX_ATTEMPTS = 3;
   
   async loadModel() {
-    this.model = await tf.loadGraphModel('/models/model.json');
+    while (this.loadAttempts < this.MAX_ATTEMPTS) {
+      try {
+        this.model = await tf.loadGraphModel('/models/model.json');
+        return;
+      } catch (error) {
+        this.loadAttempts++;
+        if (this.loadAttempts === this.MAX_ATTEMPTS) {
+          throw new Error(`Failed to load model after ${this.MAX_ATTEMPTS} attempts`);
+        }
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
   }
 
   private preprocessInput(input: ModelInput) {
@@ -25,29 +37,34 @@ export class RandomForestModel {
     }
 
     const features = this.preprocessInput(input);
-    const prediction = await this.model.predict(features) as tf.Tensor;
-    const predArray = await prediction.array();
-    
-    const predictedStrength = predArray[0][0];
-    const stdDev = predArray[0][1];
-    const CI_FACTOR = 2.576; // 99% confidence interval
+    try {
+      const prediction = await this.model.predict(features) as tf.Tensor;
+      const predArray = await prediction.array();
+      
+      const predictedStrength = predArray[0][0];
+      const stdDev = predArray[0][1];
+      const CI_FACTOR = 2.576; // 99% confidence interval
 
-    const lowerCI = predictedStrength - CI_FACTOR * stdDev;
-    const upperCI = predictedStrength + CI_FACTOR * stdDev;
-    
-    const minRequired = getMinYieldStrength(input.Dimension, input.Grade);
-    const passes = lowerCI >= minRequired;
-    const margin = lowerCI - minRequired;
+      const lowerCI = predictedStrength - CI_FACTOR * stdDev;
+      const upperCI = predictedStrength + CI_FACTOR * stdDev;
+      
+      const minRequired = getMinYieldStrength(input.Dimension, input.Grade);
+      const passes = lowerCI >= minRequired;
+      const margin = lowerCI - minRequired;
 
-    features.dispose();
-    prediction.dispose();
+      features.dispose();
+      prediction.dispose();
 
-    return {
-      predictedStrength,
-      lowerCI,
-      upperCI,
-      passes,
-      margin
-    };
+      return {
+        predictedStrength,
+        lowerCI,
+        upperCI,
+        passes,
+        margin
+      };
+    } catch (error) {
+      features.dispose();
+      throw error;
+    }
   }
 }
