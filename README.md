@@ -1,80 +1,36 @@
 # Steel Yield Predictor
 
-A desktop application for predicting steel yield strength using a Random Forest model.
+## Easy Installation
 
-## Overview
+1. Download and extract the zip file
+2. Double-click `Install.bat`
+3. Follow the installation prompts
 
-This application was originally developed as a web application and has been converted to a desktop application using Electron for better performance and offline capabilities.
+The installer will:
+- Check for and install Node.js if needed
+- Install all required dependencies
+- Build and launch the application installer
+
+## Manual Installation
+
+If you prefer to install manually:
+
+1. Install Node.js from https://nodejs.org
+2. Open command prompt in the extracted folder
+3. Run:
+   ```bash
+   npm install
+   npm run dist
+   ```
+4. Run the installer from the `release` folder
 
 ## Features
 
-- Predict steel yield strength using a trained Random Forest model
-- Import and process Excel files
-- Visualize prediction results
+- Predict steel yield strength using advanced machine learning
+- Import and analyze Excel data
 - Generate detailed reports
-- Work offline with local data
+- Visualize predictions and results
 
-## Installation
+## Support
 
-1. Download the latest `SteelYieldPredictor-Setup.exe` from the releases page
-2. Run the installer
-3. Launch the application
-
-## Development
-
-### Prerequisites
-
-- Node.js 18+
-- Python 3.8+
-- pip for Python package management
-
-### Setup
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/ErdUi/steel-yield-predictor.git
-   cd steel-yield-predictor
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   pip install -r requirements.txt
-   ```
-
-3. Run in development mode:
-   ```bash
-   npm run dev
-   ```
-
-### Building
-
-To create an installer:
-```bash
-npm run build
-```
-
-## Project Structure
-
-```
-/
-├── src/                    # Source files
-│   ├── main/               # Electron main process
-│   │   └── main.js         # Main entry point
-│   ├── renderer/           # Electron renderer process
-│   │   ├── components/     # UI components
-│   │   └── pages/          # Application pages
-│   └── model/              # Python ML model
-│       └── predictor.py    # Random Forest model
-├── dist/                   # Built application
-├── release/                # Release files
-└── docs/                   # Documentation
-```
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-MIT
+For support or bug reports, please create an issue on GitHub.
