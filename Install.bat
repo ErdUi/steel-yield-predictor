@@ -1,60 +1,115 @@
 @echo off
 setlocal enabledelayedexpansion
 
+echo ==========================================
+echo     Steel Yield Predictor Installer
+echo ==========================================
+echo.
+
 :: Get the directory where the batch file is located
 set "SCRIPT_DIR=%~dp0"
+echo Installation directory: %SCRIPT_DIR%
 
 :: Change to the script directory
 cd /d "%SCRIPT_DIR%"
 
 echo Checking for package.json...
 if not exist "package.json" (
-    echo Error: package.json not found in current directory.
-    echo Please make sure you're running this script from the project root directory.
+    echo ERROR: package.json not found in current directory.
+    echo Please make sure all files are extracted from the zip file.
+    echo.
     pause
     exit /b 1
 )
 
-echo Installing Steel Yield Predictor...
-
-:: Clean npm cache and remove existing node_modules
-echo Cleaning previous installation...
-rd /s /q node_modules 2>nul
-rd /s /q release 2>nul
-npm cache clean --force
-
+echo Checking Node.js installation...
 :: Check if Node.js is installed
 node --version > nul 2>&1
 if errorlevel 1 (
-    echo Node.js is not installed. Downloading and installing Node.js...
+    echo Installing Node.js...
+    echo This may take a few minutes...
     powershell -Command "& {Invoke-WebRequest -Uri 'https://nodejs.org/dist/v18.17.0/node-v18.17.0-x64.msi' -OutFile 'node-installer.msi'}"
+    if errorlevel 1 (
+        echo ERROR: Failed to download Node.js installer
+        pause
+        exit /b 1
+    )
+
+    echo Running Node.js installer...
     start /wait msiexec /i node-installer.msi /qn
+    if errorlevel 1 (
+        echo ERROR: Node.js installation failed
+        pause
+        exit /b 1
+    )
     del node-installer.msi
     
+    echo Node.js installed successfully
     :: Refresh environment variables
     call RefreshEnv.cmd
 )
 
+:: Clean previous installation
+echo.
+echo Cleaning previous installation...
+if exist node_modules (
+    echo Removing old node_modules...
+    rd /s /q node_modules
+)
+if exist release (
+    echo Removing old release files...
+    rd /s /q release
+)
+
+echo Cleaning npm cache...
+npm cache clean --force
+
 :: Install dependencies
+echo.
 echo Installing dependencies...
-npm install --no-audit --no-fund
+echo This may take several minutes...
+call npm install --no-audit --no-fund
+if errorlevel 1 (
+    echo ERROR: Failed to install dependencies
+    pause
+    exit /b 1
+)
 
 :: Build application
+echo.
 echo Building application...
 call npm run build
 if errorlevel 1 (
-    echo Error: Build failed
+    echo ERROR: Build failed
+    echo Please check if all files are present and try again
     pause
     exit /b 1
 )
 
 :: Find and run the installer
+echo.
+echo Searching for installer...
+set "FOUND_INSTALLER=0"
 for /r %%i in (*Setup*.exe) do (
-    echo Running installer: %%i
+    echo Found installer: %%i
+    echo Starting installer...
     start "" "%%i"
-    exit /b 0
+    set "FOUND_INSTALLER=1"
+    goto INSTALLER_FOUND
 )
 
-echo Error: Could not find installer executable.
+:INSTALLER_CHECK
+if "%FOUND_INSTALLER%"=="0" (
+    echo ERROR: Could not find installer executable
+    echo Please make sure the build completed successfully
+    pause
+    exit /b 1
+)
+
+:INSTALLER_FOUND
+echo.
+echo Installation process completed successfully!
+echo The installer should now be running.
+echo If the installer didn't start, please check the release folder.
+echo.
 pause
-exit /b 1
