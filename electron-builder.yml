@@ -1,22 +1,56 @@
 appId: com.steel-yield-predictor
 productName: Steel Yield Predictor
+copyright: Copyright © 2024
+
 win:
   target:
-    - portable
+    - target: nsis
+      arch:
+        - x64
+  icon: build/icon.ico
   certificateFile: certificate.pfx
   certificatePassword: ${CERTIFICATE_PASSWORD}
   publisherName: Your Organization
-  verifyUpdateCodeSignature: true
-  signDlls: true
-portable:
-  artifactName: SteelYieldPredictor.exe
-asarUnpack:
-  - node_modules/tensorflow.js/**/*
+  verifyUpdateCodeSignature: false
+
+nsis:
+  oneClick: true
+  perMachine: false
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Steel Yield Predictor
+  uninstallDisplayName: Steel Yield Predictor
+  artifactName: SteelYieldPredictor-Setup-${version}.${ext}
+  deleteAppDataOnUninstall: true
+  runAfterFinish: true
+  installerIcon: build/icon.ico
+  uninstallerIcon: build/icon.ico
+  installerHeaderIcon: build/icon.ico
+
 files:
   - dist/**/*
+  - build/**/*
   - models/**/*
   - '!**/*.map'
   - '!**/*.ts'
-compressionLevel: maximum
-appImage:
-  license: LICENSE
+  - package.json
+
+directories:
+  buildResources: build
+  output: release
+
+compression: maximum
+
+extraResources:
+  - from: "src/model"
+    to: "model"
+    filter:
+      - "**/*"
+  - from: "python-env"
+    to: "python-env"
+    filter:
+      - "**/*"
+
+publish:
+  provider: github
+  releaseType: release
