@@ -27,10 +27,15 @@
   },
   "dependencies": {
     "electron-updater": "^6.1.7",
-    "python-shell": "^5.0.0"
+    "python-shell": "^5.0.0",
+    "glob": "^10.3.10",
+    "lru-cache": "^10.1.0"
   },
   "devDependencies": {
     "electron": "^28.1.0",
     "electron-builder": "^24.9.1"
+  },
+  "overrides": {
+    "glob": "^10.3.10"
   }
 }
