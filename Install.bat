@@ -10,9 +10,15 @@ if errorlevel 1 (
     del node-installer.msi
 )
 
+:: Clear npm cache and remove node_modules
+echo Cleaning previous installation...
+rd /s /q node_modules 2>nul
+rd /s /q release 2>nul
+npm cache clean --force
+
 :: Install dependencies and build
 echo Installing dependencies...
-npm install
+npm install --no-audit --no-fund
 
 echo Building application...
 npm run dist
