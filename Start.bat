@@ -1,0 +1,3 @@
+@echo off
+echo Starting Steel Yield Strength Predictor...
+npm run dev
