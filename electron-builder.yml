@@ -8,8 +8,6 @@ win:
       arch:
         - x64
   icon: build/icon.ico
-  certificateFile: certificate.pfx
-  certificatePassword: ${CERTIFICATE_PASSWORD}
   publisherName: Your Organization
   verifyUpdateCodeSignature: false
 
@@ -23,13 +21,6 @@ nsis:
   artifactName: SteelYieldPredictor-Setup-${version}.${ext}
   deleteAppDataOnUninstall: true
   runAfterFinish: true
-  installerIcon: build/icon.ico
-  uninstallerIcon: build/icon.ico
-  installerHeaderIcon: build/icon.ico
-  installerSidebar: build/installerSidebar.bmp
-  uninstallerSidebar: build/uninstallerSidebar.bmp
-  license: LICENSE
-  include: build/installer.nsh
 
 files:
   - dist/**/*

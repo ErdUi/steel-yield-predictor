@@ -80,13 +80,18 @@ if (Test-Path "release") { Remove-Item -Recurse -Force "release" }
 Show-Progress "Cleaning npm cache" 30
 npm cache clean --force
 
-# Install dependencies
+# Install only production dependencies
 Show-Progress "Installing dependencies" 40
 Write-Host "Installing dependencies..." -ForegroundColor Yellow
-npm install --no-audit --no-fund
+npm install --only=prod --no-optional --no-fund --no-audit
+
+# Install dev dependencies needed for building
+Show-Progress "Installing build dependencies" 60
+Write-Host "Installing build dependencies..." -ForegroundColor Yellow
+npm install --save-dev electron electron-builder --no-fund --no-audit
 
 # Build application
-Show-Progress "Building application" 70
+Show-Progress "Building application" 80
 Write-Host "Building application..." -ForegroundColor Yellow
 npm run dist
 
